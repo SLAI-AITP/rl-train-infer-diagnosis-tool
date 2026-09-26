@@ -1,6 +1,5 @@
 ---
 name: rl-train-infer-diagnosis
-license: MIT
 description: 定位 RL 中 rollout 引擎生成、train 引擎重放同一批 token 时的训推不一致。通过参数核对、有效 token 平均 cos sim、双向同输入重放和单项干预，区分局部误差源、传播或放大机制，并确认当前场景的具体算子或实现细节主因。适用于不同训练／推理框架、kernel、精度和并行路径的前向一致性诊断。
 ---
 

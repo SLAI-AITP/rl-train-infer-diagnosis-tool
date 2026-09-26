@@ -89,10 +89,14 @@ def validate(root, files):
     return meta, status
 
 
-def require_license(root, files, meta, status):
-    if status["rights_confirmed"] is not True or not status.get("license_spdx"):
-        raise ValueError("Rights/license confirmation pending. Use --draft for a review archive.")
+def require_release_ready(root, files, meta, status):
+    if status["rights_confirmed"] is not True:
+        raise ValueError("Publication rights confirmation pending. Use --draft for a review archive.")
     paths = ["LICENSE", str(SKILL / "LICENSE")]
+    if not status.get("license_spdx"):
+        if meta.get("license") or set(paths).intersection(files):
+            raise ValueError("License metadata/files require a declared license_spdx")
+        return
     if not set(paths).issubset(files):
         raise ValueError("Both repository and standalone skill LICENSE must be listed")
     licenses = [(root / name).read_bytes() for name in paths]
@@ -106,7 +110,7 @@ def build(root, destination, draft=False):
     files = release_files(root)
     meta, status = validate(root, files)
     if not draft:
-        require_license(root, files, meta, status)
+        require_release_ready(root, files, meta, status)
     destination.mkdir(parents=True, exist_ok=True)
     suffix = "-draft" if draft else ""
     archive = destination / f"{PROJECT}{suffix}.zip"
@@ -141,7 +145,7 @@ def main():
         meta, status = validate(ROOT, files)
         if args.check:
             if status["rights_confirmed"]:
-                require_license(ROOT, files, meta, status)
+                require_release_ready(ROOT, files, meta, status)
             print(json.dumps({"packaging": "ok", "file_count": len(files),
                               "rights_confirmed": status["rights_confirmed"],
                               "license_spdx": status["license_spdx"]}, indent=2))

@@ -6,7 +6,7 @@
 
 框架适配应保留原 forward 路径、token／rank 映射、完整状态、自重放控制和插桩前后端点。若改变 dtype、并行、batch、fusion 或 cache，请将其作为独立实验变量记录。公开案例应包含可运行命令、环境、原始结果和结论边界。
 
-添加要分发的文件时更新 `release-files.txt`。样本和模型须有可公开使用的来源；不要提交凭据、私有 prompt、权重、trace、系统元数据或本地路径。第三方代码需保留其来源与要求的声明。授权状态以 PROVENANCE.md 和 LICENSE 为准。
+添加要分发的文件时更新 `release-files.txt`。样本和模型须有可公开使用的来源；不要提交凭据、私有 prompt、权重、trace、系统元数据或本地路径。第三方代码需保留其来源与要求的声明。授权状态以 PROVENANCE.md 为准。
 
 ## 测试
 
@@ -19,13 +19,13 @@ python -m unittest discover -s tests -p 'test_*.py' -v
 python tools/build_release.py --check
 ```
 
-本次开源整理的离线检查包括 21 项指标／CLI 测试和 5 项合成流程／发布测试，均已通过，并检查了 ZIP 解包和 skill 单独安装后的运行。环境为 macOS、Python 3.9.6、NumPy 1.26.4。GitHub Actions 配置覆盖 Python 3.10 和 3.12，远程结果以实际 CI 为准。这些离线检查与 skill 已有的实际训推诊断验证分别记录。
+离线检查包括指标／CLI、合成流程和发布测试，并检查 ZIP 解包和 skill 单独安装后的运行。本地环境为 macOS、Python 3.9.6、NumPy 1.26.4。GitHub Actions 配置覆盖 Python 3.10 和 3.12，远程结果以实际 CI 为准。这些离线检查与 skill 已有的实际训推诊断验证分别记录。
 
 ## 打包
 
 审查草稿：`python tools/build_release.py --draft`。
 
-正式打包：`python tools/build_release.py`。该命令检查许可状态、MIT 元数据，以及仓库与独立 skill 目录中的完整 LICENSE。
+生成发布包：`python tools/build_release.py`。该命令检查公开发布授权与文件清单；若声明了许可证，还会检查许可元数据与许可文件是否一致。
 
 打包仅包含 `release-files.txt` 中明确列出的文件，不递归打包工作区。生成物排除虚拟环境、系统元数据、原始 trace 和本地审查材料。目标 ZIP 已存在时会停止，可使用 `--destination` 指定新的输出目录。
 

@@ -24,12 +24,38 @@ class ReleaseTests(unittest.TestCase):
             other = release.build(ROOT, Path(directory) / "second", draft=True)
             self.assertEqual(archive.read_bytes(), other.read_bytes())
 
-    def test_pending_license_prevents_release_but_not_draft(self):
+    def test_pending_publication_rights_prevents_release(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "release-status.json").write_text(json.dumps({"rights_confirmed": False, "license_spdx": None}))
             with self.assertRaisesRegex(ValueError, "confirmation pending"):
-                release.require_license(root, [], {}, {"rights_confirmed": False, "license_spdx": None})
+                release.require_release_ready(root, [], {}, {"rights_confirmed": False, "license_spdx": None})
+
+    def test_release_without_license_contains_exact_allowlist(self):
+        with tempfile.TemporaryDirectory() as directory:
+            archive = release.build(ROOT, Path(directory))
+            with zipfile.ZipFile(archive) as data:
+                actual = {str(Path(name).relative_to(release.PROJECT)) for name in data.namelist()}
+                self.assertEqual(actual, set(release.release_files(ROOT)))
+                self.assertNotIn("LICENSE", actual)
+                self.assertNotIn(str(release.SKILL / "LICENSE"), actual)
+                self.assertNotIn("DRAFT_NOTICE.txt", actual)
+                self.assertIsNone(data.testzip())
+
+    def test_inconsistent_license_declarations_prevent_release(self):
+        cases = [
+            ([], {"license": "MIT"}, None, "declared license_spdx"),
+            (["LICENSE"], {}, None, "declared license_spdx"),
+            ([], {"license": "MIT"}, "MIT", "LICENSE must be listed"),
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            for files, meta, license_id, message in cases:
+                with self.subTest(files=files, meta=meta, license_id=license_id):
+                    with self.assertRaisesRegex(ValueError, message):
+                        release.require_release_ready(
+                            Path(directory), files, meta,
+                            {"rights_confirmed": True, "license_spdx": license_id},
+                        )
 
     def test_manifest_rejects_traversal_metadata_and_symlinks(self):
         with tempfile.TemporaryDirectory() as directory:

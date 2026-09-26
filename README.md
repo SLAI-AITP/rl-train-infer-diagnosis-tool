@@ -43,7 +43,3 @@ and any unresolved questions.
 ```
 
 If no traces are available, new ones can be collected with access to the code, model weights, and compute resources.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).

@@ -2,7 +2,6 @@
 .github/workflows/tests.yml
 .gitignore
 CONTRIBUTING.md
-LICENSE
 PROVENANCE.md
 README.md
 examples/synthetic/README.md
@@ -11,7 +10,6 @@ release-files.txt
 release-status.json
 requirements-dev.txt
 requirements.txt
-skills/rl-train-infer-diagnosis/LICENSE
 skills/rl-train-infer-diagnosis/SKILL.md
 skills/rl-train-infer-diagnosis/agents/openai.yaml
 skills/rl-train-infer-diagnosis/references/capture-and-metrics.md
