@@ -1,0 +1,16 @@
+.DS_Store
+__MACOSX/
+._*
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+dist/
+outputs/
+*.npz
+*.pt
+*.pth
+*.safetensors
+.env
+.env.*
+!.env.example

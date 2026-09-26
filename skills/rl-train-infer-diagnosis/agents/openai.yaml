@@ -1,0 +1,4 @@
+interface:
+  display_name: "RL 训推不一致定位"
+  short_description: "通过逐层余弦相似度、同输入重放和单项干预定位 RL 训推不一致的具体主因"
+  default_prompt: "请使用 $rl-train-infer-diagnosis，对 rollout 生成、train 重放同一批 token 的场景定位训推不一致的具体原因，并给出可复核的实验依据。"

@@ -1,0 +1,27 @@
+# Explicit public-package allowlist. Runtime outputs and review files stay outside.
+.github/workflows/tests.yml
+.gitignore
+CONTRIBUTING.md
+LICENSE
+PROVENANCE.md
+README.md
+examples/synthetic/README.md
+examples/synthetic/run_demo.py
+release-files.txt
+release-status.json
+requirements-dev.txt
+requirements.txt
+skills/rl-train-infer-diagnosis/LICENSE
+skills/rl-train-infer-diagnosis/SKILL.md
+skills/rl-train-infer-diagnosis/agents/openai.yaml
+skills/rl-train-infer-diagnosis/references/capture-and-metrics.md
+skills/rl-train-infer-diagnosis/references/causal-validation-and-report.md
+skills/rl-train-infer-diagnosis/references/instrumentation-guide.md
+skills/rl-train-infer-diagnosis/references/operator-localization.md
+skills/rl-train-infer-diagnosis/references/replay-and-amplification.md
+skills/rl-train-infer-diagnosis/requirements.txt
+skills/rl-train-infer-diagnosis/scripts/compare_tensors.py
+skills/rl-train-infer-diagnosis/scripts/test_compare_tensors.py
+tests/test_release.py
+tests/test_synthetic_demo.py
+tools/build_release.py
